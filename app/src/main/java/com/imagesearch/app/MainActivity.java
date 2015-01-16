@@ -1,6 +1,5 @@
 package com.imagesearch.app;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -52,7 +51,6 @@ public class MainActivity extends Activity {
         });
     }
 
-    @TargetApi(12)
     protected void search(String query) {
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         final int cacheSize = maxMemory / 8;
@@ -119,6 +117,9 @@ public class MainActivity extends Activity {
             try {
                 JSONObject responseObject = jsonObj.getJSONObject("responseData");
                 JSONArray resultArray = responseObject.getJSONArray("results");
+                JSONObject cursor = responseObject.getJSONObject("cursor");
+                String moreUrl = cursor.getString("moreResultsUrl");
+                Log.i(TAG, "More url is " + moreUrl);
 
                 new DownloadImageTask().execute(resultArray);
                 System.out.println("Result array length is: " + resultArray.length());
@@ -131,7 +132,6 @@ public class MainActivity extends Activity {
 
     private class DownloadImageTask extends AsyncTask<JSONArray, Void, ArrayList<GoogleImage>> {
 
-        @TargetApi(12)
         protected ArrayList<GoogleImage> doInBackground(JSONArray... urls) {
 
             ArrayList<GoogleImage> listImages = new ArrayList<GoogleImage>();
@@ -173,11 +173,11 @@ public class MainActivity extends Activity {
         }
 
         protected void onPostExecute(ArrayList<GoogleImage> result) {
-            setListViewAdapter(result);
+            setGridViewAdapter(result);
         }
     }
 
-    public void setListViewAdapter(ArrayList<GoogleImage> images) {
+    public void setGridViewAdapter(ArrayList<GoogleImage> images) {
         adapter = new GridViewImageAdapter(this, images);
         gridView.setAdapter(adapter);
     }
