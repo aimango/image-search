@@ -1,6 +1,5 @@
 package com.imagesearch.app;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -18,12 +18,11 @@ import java.util.ArrayList;
 public class GridViewImageAdapter extends BaseAdapter {
 
     private MainActivity activity;
-    public ArrayList<GoogleImage> listImages;
+    public ArrayList<GoogleImage> listImages = new ArrayList<GoogleImage>();
     private static LayoutInflater inflater = null;
 
-    public GridViewImageAdapter(MainActivity a, ArrayList<GoogleImage> listImages) {
+    public GridViewImageAdapter(MainActivity a) {
         activity = a;
-        this.listImages = listImages;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -42,7 +41,11 @@ public class GridViewImageAdapter extends BaseAdapter {
         return i;
     }
 
-    @TargetApi(12)
+    public void addResult(GoogleImage result) {
+        listImages.add(result);
+        notifyDataSetChanged();
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ImageView imageView;
@@ -57,7 +60,8 @@ public class GridViewImageAdapter extends BaseAdapter {
         }
 
         String imageUrl = listImages.get(position).getThumbUrl();
-        imageView.setImageBitmap(activity.imageCache.get(imageUrl));
+//        imageView.setImageBitmap(activity.imageCache.get(imageUrl));
+        Picasso.with(activity).load(imageUrl).into(imageView);
 
         return imageView;
     }
