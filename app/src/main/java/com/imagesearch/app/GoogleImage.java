@@ -1,8 +1,5 @@
 package com.imagesearch.app;
 
-/**
- * Created by aimango on 15-01-16.
- */
 public class GoogleImage {
     String thumbUrl;
     String actualUrl;

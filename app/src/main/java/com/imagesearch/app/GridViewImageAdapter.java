@@ -12,9 +12,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-/**
- * Created by aimango on 15-01-16.
- */
 public class GridViewImageAdapter extends BaseAdapter {
 
     private MainActivity activity;
@@ -60,7 +57,6 @@ public class GridViewImageAdapter extends BaseAdapter {
         }
 
         String imageUrl = listImages.get(position).getThumbUrl();
-//        imageView.setImageBitmap(activity.imageCache.get(imageUrl));
         Picasso.with(activity).load(imageUrl).into(imageView);
 
         return imageView;
